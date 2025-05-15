@@ -1,44 +1,42 @@
 # HealthChain
 
-HealthChain — це децентралізована платформа для зберігання, управління та безпечного обміну медичними даними у вигляді NFT. Дані зашифровуються локально на боці користувача, зберігаються на IPFS, а доступ до них контролюється смарт-контрактами на блокчейні Solana.
+HealthChain is a decentralized platform for storing, managing, and securely sharing medical data as NFTs. Data is encrypted locally on the user's side, stored on IPFS, and access to it is controlled by smart contracts on the Solana blockchain.
 
-## Мета
+## Goal
 
-Надати пацієнтам повний контроль над власними медичними записами без залучення централізованих систем охорони здоров'я. Система дозволяє:
+To give patients complete control over their own medical records without involving centralized healthcare systems. The system allows:
 
-- зберігати медичні дані у зашифрованому вигляді;
-- створювати NFT, що містять посилання на ці дані;
-- надавати лікарям або іншим сторонам доступ до перегляду даних через смарт-контракти;
-- зберігати прозору історію доступів до медичної інформації.
+- storing medical data in encrypted form;
+- creating NFTs containing links to this data;
+- granting doctors or other parties access to view data through smart contracts;
+- maintaining a transparent history of access to medical information.
 
-## Технології
+## Technologies
 
-- **Next.js** + **TypeScript** — фронтенд-застосунок
-- **Solana** — блокчейн для зберігання NFT та керування правами доступу
-- **IPFS** — децентралізоване сховище для медичних даних
-- **WebCrypto API** — клієнтське шифрування даних
-- **Metaplex SDK** — мінт NFT на Solana
+- **Next.js** + **TypeScript** — frontend application
+- **Solana** — blockchain for storing NFTs and managing access rights
+- **IPFS** — decentralized storage for medical data
+- **WebCrypto API** — client-side data encryption
+- **Metaplex SDK** — minting NFTs on Solana
 
+## Main Functionality
 
-## Основний функціонал
+1.  **Wallet Connection**
+    On the main page, the user can connect their Solana wallet via Phantom or other supported adapters.
 
-1. **Підключення гаманця**  
-   На головній сторінці користувач може підключити свій Solana-гаманець через Phantom або інші підтримувані адаптери.
+2.  **Upload and Encryption**
+    Data entered into the form is encrypted locally in the browser, and only the encrypted version is uploaded to IPFS.
 
-2. **Завантаження та шифрування**  
-   Дані, які вводяться у формі, шифруються локально в браузері, і лише зашифрована версія завантажується на IPFS.
+3.  **NFT Minting**
+    After uploading to IPFS, an NFT is created that contains a link to the encrypted data. The NFT is stored in the user's wallet.
 
-3. **Мінт NFT**  
-   Після завантаження на IPFS створюється NFT, який містить посилання на зашифровані дані. NFT зберігається у гаманці користувача.
+4.  **Access Control**
+    Future implementation includes the use of smart contracts to grant temporary or permanent access rights to data based on the NFT.
 
-4. **Контроль доступу**  
-   У майбутній реалізації передбачено використання смарт-контрактів для видачі тимчасових або постійних прав доступу до даних на основі NFT.
-
-## Встановлення
+## Installation
 
 ```bash
-git clone https://github.com/HealthChainD/HealthChain.git
+git clone [https://github.com/HealthChainD/HealthChain.git](https://github.com/HealthChainD/HealthChain.git)
 cd healthchain
 npm install
 npm run dev
-
