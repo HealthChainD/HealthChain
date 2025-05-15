@@ -69,6 +69,7 @@ export default function UploadForm() {
   };
 
   return (
+    
     <div className={styles.uploadContainer}>
       <h2>Завантаження медичних файлів</h2>
 

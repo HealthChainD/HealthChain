@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { WalletProviders } from "@/app/components/WalletProviders";
+import Navbar from '@/app/components/Navbar/Navbar';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,6 +14,7 @@ export default function RootLayout({  children,}: Readonly<{  children: React.Re
     <html lang="en">
       <body>
        <WalletProviders>
+        <Navbar/>
           {children}
         </WalletProviders>
       </body>
