@@ -1,10 +1,14 @@
 import UploadForm from '@/app/components/UploadForm';
 
+import styles from './UploadPage.module.css';
+
 export default function UploadPage() {
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Завантажити медичні дані</h1>
-      <UploadForm />
+    <div className={styles.container}>      
+      <div className={styles.content}>
+        <h1 className={styles.title}>Upload Medical Data</h1>
+        <UploadForm />
+      </div>
     </div>
   );
 }
