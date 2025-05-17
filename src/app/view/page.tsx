@@ -1,6 +1,6 @@
 import DecryptForm from '@/app/components/DecryptForm/DecryptForm';
 
-import styles from './DecryptForm.module.css';
+import styles from './DecryptPage.module.css';
 
 export default function DecryptPage() {
   return (
