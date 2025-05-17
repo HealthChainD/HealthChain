@@ -100,3 +100,126 @@
 .downloadButton:hover {
   background-color: #2b6cb0;
 }
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.modalPreview {
+  height: calc(90vh - 4rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullPreview {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 4px;
+}
+
+.fullAudioPreview {
+  width: 100%;
+  max-width: 500px;
+}
+
+.previewSection {
+  margin-top: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.previewActions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.previewButton {
+  padding: 0.5rem 1rem;
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.previewButton:hover {
+  background-color: #2b6cb0;
+}
+
+.previewFrame {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.previewSection {
+  margin-top: 2rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.previewImage {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.previewVideo {
+  width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.previewAudio {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.unsupportedPreview {
+  padding: 2rem;
+  text-align: center;
+  color: #4a5568;
+}

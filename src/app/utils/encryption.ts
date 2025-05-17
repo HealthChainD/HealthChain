@@ -34,7 +34,7 @@ export async function encryptFile(file: File, phrase: string): Promise<Blob> {
   return blob;
 }
 
-export async function decryptFile(encryptedBlob: Blob, phrase: string, originalType?: string): Promise<Blob> {
+export async function decryptFile(encryptedBlob: Blob, phrase: string, fileType: string): Promise<Blob> {
   const buffer = await encryptedBlob.arrayBuffer();
   const salt = buffer.slice(0, 16);
   const iv = buffer.slice(16, 28);
@@ -67,5 +67,6 @@ export async function decryptFile(encryptedBlob: Blob, phrase: string, originalT
     encryptedData
   );
 
-  return new Blob([decrypted], { type: originalType || 'application/octet-stream' });
+  
+  return new Blob([decrypted], { type: fileType });
 }

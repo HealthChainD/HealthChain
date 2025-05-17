@@ -11,7 +11,8 @@ export default function DecryptForm() {
   const [error, setError] = useState('');
   const [decryptedFile, setDecryptedFile] = useState<Blob | null>(null);
   const [fileName, setFileName] = useState('');
-  const [fileType, setFileType] = useState('');
+  const [fileType, setFileType] = useState('application/pdf'); 
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,21 +21,23 @@ export default function DecryptForm() {
     setDecryptedFile(null);
 
     try {
-      const ipfsGateway = `https://ipfs.io/ipfs/${cid}`;
+      const ipfsGateway = `https://ipfs.io/ipfs/${cid}`;      
       
-      const headResponse = await fetch(ipfsGateway, { method: 'HEAD' });
-      if (!headResponse.ok) throw new Error('Failed to get file metadata');
-      
-      const contentType = headResponse.headers.get('content-type') || '';
-      setFileType(contentType);
+      let detectedType = 'application/pdf';
+      if (cid.toLowerCase().endsWith('.jpg') || cid.toLowerCase().endsWith('.jpeg')) {
+        detectedType = 'image/jpeg';
+      } else if (cid.toLowerCase().endsWith('.png')) {
+        detectedType = 'image/png';
+      }
 
       const response = await fetch(ipfsGateway);
       if (!response.ok) throw new Error(`Failed to download file (HTTP ${response.status})`);
       
       const encryptedBlob = await response.blob();
-      const decrypted = await decryptFile(encryptedBlob, phrase, contentType);
+      const decrypted = await decryptFile(encryptedBlob, phrase, detectedType);
       
       setDecryptedFile(decrypted);
+      setFileType(detectedType);
       setFileName(`decrypted-${cid.slice(0, 8)}`);
     } catch (err) {
       console.error('Decryption error:', err);
@@ -46,9 +49,8 @@ export default function DecryptForm() {
 
   const handleDownload = () => {
     if (decryptedFile) {
-      let extension = '';
-      if (fileType.includes('pdf')) extension = '.pdf';
-      else if (fileType.includes('jpeg')) extension = '.jpg';
+      let extension = '.pdf'; 
+      if (fileType.includes('jpeg')) extension = '.jpg';
       else if (fileType.includes('png')) extension = '.png';
       
       saveAs(decryptedFile, `${fileName}${extension}`);
@@ -58,17 +60,17 @@ export default function DecryptForm() {
   const renderFilePreview = () => {
     if (!decryptedFile) return null;
 
-    const type = decryptedFile.type.split('/')[0];
     const url = URL.createObjectURL(decryptedFile);
 
-    if (fileType.includes('pdf')) {
-      return (
-        <div className={styles.previewContainer}>
-          <iframe 
-            src={url}
-            className={styles.previewFrame}
-            title="Decrypted PDF"
-          />
+    return (
+      <div className={styles.previewSection}>
+        <div className={styles.previewActions}>
+          <button 
+            onClick={() => setShowPreview(true)}
+            className={styles.previewButton}
+          >
+            View Fullscreen
+          </button>
           <button 
             onClick={handleDownload}
             className={styles.downloadButton}
@@ -76,47 +78,14 @@ export default function DecryptForm() {
             Download PDF
           </button>
         </div>
-      );
-    }
 
-    switch (type) {
-      case 'image':
-        return (
-          <div className={styles.previewContainer}>
-            <img src={url} alt="Decrypted content" className={styles.previewImage} />
-            <button onClick={handleDownload} className={styles.downloadButton}>
-              Download Image
-            </button>
-          </div>
-        );
-      case 'video':
-        return (
-          <div className={styles.previewContainer}>
-            <video controls src={url} className={styles.previewVideo} />
-            <button onClick={handleDownload} className={styles.downloadButton}>
-              Download Video
-            </button>
-          </div>
-        );
-      case 'audio':
-        return (
-          <div className={styles.previewContainer}>
-            <audio controls src={url} className={styles.previewAudio} />
-            <button onClick={handleDownload} className={styles.downloadButton}>
-              Download Audio
-            </button>
-          </div>
-        );
-      default:
-        return (
-          <div className={styles.unknownFileType}>
-            <p>File successfully decrypted. Type: {decryptedFile.type}</p>
-            <button onClick={handleDownload} className={styles.downloadButton}>
-              Download File
-            </button>
-          </div>
-        );
-    }
+        <iframe 
+          src={url}
+          className={styles.previewFrame}
+          title="Decrypted Document"
+        />
+      </div>
+    );
   };
 
   return (
@@ -135,6 +104,7 @@ export default function DecryptForm() {
             onChange={(e) => setCid(e.target.value)}
             className={styles.input}
             required
+            placeholder="Qmc71kpfMgcShAJvi828P83p8BKSKNGCNoAWwgD6Dx83bD"
           />
         </div>
 
@@ -167,7 +137,7 @@ export default function DecryptForm() {
         </div>
       )}
 
-      {renderFilePreview()}
+      {decryptedFile && renderFilePreview()}
     </div>
   );
 }
