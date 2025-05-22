@@ -16,17 +16,22 @@ export async function POST(req: NextRequest) {
 
         const pinataFormData = new FormData();
         pinataFormData.append('file', blob, filename);
-        pinataFormData.append('pinataMetadata', JSON.stringify({
+        
+      
+        const metadata = {
             name: filename,
             keyvalues: {
-                originalType: fileType
+                originalType: fileType,
+                originalName: filename
             }
-        }));
+        };
+        
+        pinataFormData.append('pinataMetadata', JSON.stringify(metadata));
 
         const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${process.env.PINATA_JWT}`,
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
             },
             body: pinataFormData as any,
         });
@@ -37,7 +42,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: result.error || 'Upload failed' }, { status: 500 });
         }
 
-        return NextResponse.json({ cid: result.IpfsHash });
+        return NextResponse.json({ 
+            cid: result.IpfsHash,
+            originalType: fileType,
+            originalName: filename
+        });
     } catch (err: any) {
         console.error('UPLOAD ERROR:', err);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
