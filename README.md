@@ -36,7 +36,7 @@ To give patients complete control over their own medical records without involvi
 ## Installation
 
 ```bash
-git clone [https://github.com/HealthChainD/HealthChain.git](https://github.com/HealthChainD/HealthChain.git)
+git clone https://github.com/HealthChainD/HealthChain.git
 cd healthchain
 npm install
 npm run dev

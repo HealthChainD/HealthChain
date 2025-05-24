@@ -1,4 +1,3 @@
-
 .container {
   max-width: 600px;
   margin: 2rem auto;
@@ -9,6 +8,13 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
 .title {
   color: #2aa889;
   font-size: 1.75rem;
@@ -16,10 +22,23 @@
   font-weight: 600;
 }
 
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .form {
+    gap: 1rem;
+  }
 }
 
 .label {
@@ -55,6 +74,13 @@
   transition: all 0.2s;
 }
 
+@media (max-width: 480px) {
+  .button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
 .button:hover {
   background-color: #23987b;
   transform: translateY(-1px);
@@ -83,6 +109,19 @@
   height: 500px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .previewFrame {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .previewFrame {
+    height: 300px;
+  }
 }
 
 .downloadButton {
@@ -100,7 +139,6 @@
 .downloadButton:hover {
   background-color: #2b6cb0;
 }
-
 
 .modalOverlay {
   position: fixed;
@@ -123,6 +161,13 @@
   max-height: 90vh;
   padding: 1.5rem;
   position: relative;
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    width: 95%;
+    padding: 1rem;
+  }
 }
 
 .closeButton {
@@ -168,6 +213,18 @@
   margin-bottom: 1rem;
 }
 
+@media (max-width: 480px) {
+  .previewActions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .previewButton, .downloadButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .previewButton {
   padding: 0.5rem 1rem;
   background-color: #3182ce;
@@ -182,28 +239,23 @@
   background-color: #2b6cb0;
 }
 
-.previewFrame {
-  width: 100%;
-  height: 500px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background-color: #f8f9fa;
-}
-
-.previewSection {
-  margin-top: 2rem;
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 .previewImage {
   max-width: 100%;
   max-height: 500px;
+  object-fit: contain;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .previewImage {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .previewImage {
+    max-height: 300px;
+  }
 }
 
 .previewVideo {
@@ -222,4 +274,25 @@
   padding: 2rem;
   text-align: center;
   color: #4a5568;
+}
+
+.walletConnectContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f7fafc;
+}
+
+.walletConnectMessage {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #2aa889;
+  font-weight: 500;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }

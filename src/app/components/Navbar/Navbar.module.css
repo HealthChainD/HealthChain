@@ -1,4 +1,3 @@
-
 .navbar {
   background-color: #2aa889;
   padding: 1rem 2rem;
@@ -6,6 +5,7 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .navbarBrand {
@@ -18,6 +18,7 @@
 .navLinks {
   display: flex;
   gap: 1.5rem;
+  align-items: center;
 }
 
 .navLink {
@@ -51,4 +52,89 @@
 .walletButton:hover {
   background-color: #f0f0f0;
   transform: translateY(-1px);
+}
+
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1000;
+}
+
+.mobileMenuIcon {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.mobileMenuIcon::before,
+.mobileMenuIcon::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  transition: transform 0.2s;
+}
+
+.mobileMenuIcon::before {
+  top: -8px;
+}
+
+.mobileMenuIcon::after {
+  bottom: -8px;
+}
+
+@media (max-width: 768px) {
+  .mobileMenuButton {
+    display: block;
+  }
+
+  .navLinks {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #2aa889;
+    flex-direction: column;
+    padding: 5rem 2rem 2rem;
+    transition: right 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .mobileMenuOpen {
+    right: 0;
+  }
+
+  .navLink {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .walletButton {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .mobileMenuOpen .mobileMenuIcon {
+    background-color: transparent;
+  }
+
+  .mobileMenuOpen .mobileMenuIcon::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  .mobileMenuOpen .mobileMenuIcon::after {
+    transform: rotate(-45deg);
+    bottom: 0;
+  }
 }

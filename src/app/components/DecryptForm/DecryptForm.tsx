@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { decryptFile } from '@/app/utils/encryption';
 import * as mammoth from 'mammoth';
 import styles from './DecryptForm.module.css';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const FilePreview = ({ file, fileType }: { file: Blob, fileType: string }) => {
   const [html, setHtml] = useState('');
@@ -46,6 +47,7 @@ const FilePreview = ({ file, fileType }: { file: Blob, fileType: string }) => {
 };
 
 export default function DecryptForm() {
+  const { publicKey } = useWallet();
   const [cid, setCid] = useState('');
   const [phrase, setPhrase] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -188,6 +190,16 @@ export default function DecryptForm() {
       </div>
     );
   };
+
+  if (!publicKey) {
+  return (
+    <div className={styles.walletConnectContainer}>
+      <div className={styles.walletConnectMessage}>
+        Connect your wallet to use this page
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className={styles.container}>
