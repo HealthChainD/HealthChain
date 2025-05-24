@@ -55,7 +55,7 @@ export default function UploadForm() {
         const cid = await uploadToIPFS(encrypted, file.name, file.type);
         links.push({
           url: `https://ipfs.io/ipfs/${cid}`,
-          name: `https://ipfs.io/ipfs/${cid}`,
+          name: `${cid}`,
           type: file.type
         });
       }

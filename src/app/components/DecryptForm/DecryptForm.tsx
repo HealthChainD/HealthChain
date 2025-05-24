@@ -1,26 +1,35 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { saveAs } from 'file-saver';
 import { decryptFile } from '@/app/utils/encryption';
+import * as mammoth from 'mammoth';
 import styles from './DecryptForm.module.css';
 
 const FilePreview = ({ file, fileType }: { file: Blob, fileType: string }) => {
+  const [html, setHtml] = useState('');
   const url = URL.createObjectURL(file);
 
-  
+  useEffect(() => {
+    if (fileType.includes('wordprocessingml')) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const result = await mammoth.convertToHtml({ arrayBuffer });
+        setHtml(result.value);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    return () => URL.revokeObjectURL(url);
+  }, [file, fileType]);
+
   if (fileType.includes('pdf')) {
     return <iframe src={url} className={styles.previewFrame} title="PDF Preview" />;
   }
 
-  if (fileType.includes('msword') || fileType.includes('wordprocessingml')) {
+  if (fileType.includes('wordprocessingml')) {
     return (
-      <div className={styles.officePreview}>
-        <iframe 
-          src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`} 
-          className={styles.previewFrame}
-          title="Document Preview"
-        />
-      </div>
+      <div className={styles.officePreview} dangerouslySetInnerHTML={{ __html: html }} />
     );
   }
 
@@ -47,13 +56,13 @@ export default function DecryptForm() {
 
   const detectFileType = async (cid: string, encryptedBlob: Blob): Promise<string> => {
     try {
-      
+
       const metadataResponse = await fetch(`https://api.pinata.cloud/data/pinList?hashContains=${cid}`, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`
         }
       });
-      
+
       if (metadataResponse.ok) {
         const metadata = await metadataResponse.json();
         if (metadata.rows && metadata.rows.length > 0) {
@@ -68,7 +77,7 @@ export default function DecryptForm() {
       console.warn('Failed to fetch metadata from Pinata:', err);
     }
 
-    
+
     const cidLower = cid.toLowerCase();
     if (cidLower.endsWith('.pdf')) return 'application/pdf';
     if (cidLower.endsWith('.doc')) return 'application/msword';
@@ -76,30 +85,30 @@ export default function DecryptForm() {
     if (cidLower.endsWith('.jpg') || cidLower.endsWith('.jpeg')) return 'image/jpeg';
     if (cidLower.endsWith('.png')) return 'image/png';
 
-    
+
     try {
       const buffer = await encryptedBlob.slice(0, 4).arrayBuffer();
       const view = new DataView(buffer);
 
-      
+
       if (view.getUint32(0) === 0x25504446) return 'application/pdf';
-      
-      
+
+
       if (view.getUint32(0) === 0x89504E47) return 'image/png';
-      
-      
+
+
       if (view.getUint16(0) === 0xFFD8) return 'image/jpeg';
-      
-      
+
+
       if (view.getUint32(0) === 0xD0CF11E0) return 'application/msword';
-      
-      
+
+
       if (view.getUint32(0) === 0x504B0304) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     } catch (err) {
       console.warn('Failed to detect file type from content:', err);
     }
 
-    
+
     return 'application/octet-stream';
   };
 
@@ -112,7 +121,7 @@ export default function DecryptForm() {
     try {
       const ipfsGateway = `https://ipfs.io/ipfs/${cid}`;
       const response = await fetch(ipfsGateway);
-      
+
       if (!response.ok) {
         throw new Error(`Не вдалося завантажити файл (HTTP ${response.status})`);
       }
@@ -120,7 +129,7 @@ export default function DecryptForm() {
       const encryptedBlob = await response.blob();
       const detectedType = await detectFileType(cid, encryptedBlob);
       console.log('Detected file type:', detectedType);
-      
+
       try {
         const decrypted = await decryptFile(encryptedBlob, phrase, detectedType);
         setDecryptedFile(decrypted);
@@ -158,14 +167,14 @@ export default function DecryptForm() {
     return (
       <div className={styles.previewSection}>
         <div className={styles.previewActions}>
-          <button 
+          <button
             onClick={() => setShowPreview(true)}
             className={styles.previewButton}
             disabled={fileType === 'application/octet-stream'}
           >
             Повноекранний перегляд
           </button>
-          <button 
+          <button
             onClick={handleDownload}
             className={styles.downloadButton}
           >
@@ -183,7 +192,7 @@ export default function DecryptForm() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Дешифрування файлу</h1>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label htmlFor="cid" className={styles.label}>
