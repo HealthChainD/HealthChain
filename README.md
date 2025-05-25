@@ -8,7 +8,6 @@ To give patients complete control over their own medical records without involvi
 
 - storing medical data in encrypted form;
 - creating NFTs containing links to this data;
-- granting doctors or other parties access to view data through smart contracts;
 - maintaining a transparent history of access to medical information.
 
 ## Technologies
@@ -16,7 +15,6 @@ To give patients complete control over their own medical records without involvi
 - **Next.js** + **TypeScript** — frontend application
 - **Solana** — blockchain for storing NFTs and managing access rights
 - **IPFS** — decentralized storage for medical data
-- **WebCrypto API** — client-side data encryption
 - **Metaplex SDK** — minting NFTs on Solana
 
 ## Main Functionality
@@ -37,6 +35,6 @@ To give patients complete control over their own medical records without involvi
 
 ```bash
 git clone https://github.com/HealthChainD/HealthChain.git
-cd healthchain
+cd health-chain
 npm install
 npm run dev
