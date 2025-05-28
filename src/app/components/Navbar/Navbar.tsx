@@ -42,6 +42,13 @@ export default function Navbar() {
         >
           Decrypt
         </Link>
+        <Link 
+          href="/profile" 
+          className={`${styles.navLink} ${pathname === '/profile' ? styles.activeNavLink : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Профіль
+        </Link>
         <WalletMultiButton className={styles.walletButton} />
       </div>
     </nav>
