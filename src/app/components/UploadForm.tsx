@@ -15,6 +15,7 @@ export default function UploadForm() {
   const [uploading, setUploading] = useState(false);
   const [uploadedCids, setUploadedCids] = useState<string[]>([]);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
@@ -44,6 +45,36 @@ export default function UploadForm() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  const saveDocumentToDB = async (cids: string[]) => {
+    if (!publicKey || files.length === 0) return;
+    
+    setSaving(true);
+    try {
+      const response = await fetch('/api/documents', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: files[0].name, // Беремо назву з першого файлу
+          cids,
+          owner: publicKey.toString(),
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || 'Помилка при збереженні');
+      }
+      return result;
+    } catch (error) {
+      console.error('Document save error:', error);
+      throw error;
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleUpload = async () => {
     if (!phrase.trim()) {
       alert('Введіть фразу для кодування');
@@ -64,6 +95,7 @@ export default function UploadForm() {
         const cid = await uploadToIPFS(encrypted, file.name, file.type);
         cids.push(cid);
       }
+      await saveDocumentToDB(cids);
       setUploadedCids(cids);
     } catch (error) {
       console.error('Upload error:', error);
