@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
 
 export async function POST(request: Request) {
-  const { name, description, cids, owner, metadata } = await request.json();
+  const { name, cids, owner } = await request.json();
 
   if (!name || !cids || !owner) {
     return NextResponse.json(

@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface IDocument extends Document {
+export interface IDocument extends Document {
+  _id: string;
   name: string;  
   cids: string[];
   owner: string; 
-  createdAt: Date;
-  updatedAt: Date; 
+  createdAt: string;  
 }
 
 const DocumentSchema: Schema = new Schema({
