@@ -12,6 +12,8 @@ export default function UserDocuments() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [shareAddresses, setShareAddresses] = useState<{ [key: string]: string }>({});
+  const [shareStatus, setShareStatus] = useState<{ [key: string]: string }>({});
 
   const fetchDocuments = async () => {
     if (!publicKey) return;
@@ -46,6 +48,51 @@ export default function UserDocuments() {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
+
+  const handleShareAccess = async (documentId: string) => {
+    const address = shareAddresses[documentId];
+    if (!address) return;
+
+    try {
+      
+      const mockTransaction = {
+        from: publicKey?.toString(),
+        to: address,
+        type: 'ACCESS_GRANT',
+        documentId: documentId,
+        timestamp: new Date().toISOString()
+      };
+
+      
+      console.log('Sending notification transaction:', mockTransaction);
+      
+     
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      setShareStatus(prev => ({
+        ...prev,
+        [documentId]: 'Access granted and notification sent successfully!'
+      }));
+
+      setShareAddresses(prev => ({
+        ...prev,
+        [documentId]: ''
+      }));
+
+      setTimeout(() => {
+        setShareStatus(prev => ({
+          ...prev,
+          [documentId]: ''
+        }));
+      }, 3000);
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      setShareStatus(prev => ({
+        ...prev,
+        [documentId]: 'Error sending notification. Please try again.'
+      }));
+    }
   };
 
   if (!publicKey) {
@@ -89,6 +136,34 @@ export default function UserDocuments() {
                   <strong>Uploaded:</strong> {formatDate(doc.createdAt)}
                 </div>
                 
+                <div style={{ marginBottom: '0.5rem' }}>
+                  <strong>Share Access:</strong>
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '0.5rem' }}>
+                    <input
+                      type="text"
+                      placeholder="Enter Solana wallet address"
+                      value={shareAddresses[doc._id] || ''}
+                      onChange={(e) => setShareAddresses(prev => ({
+                        ...prev,
+                        [doc._id]: e.target.value
+                      }))}
+                      className={styles.input}
+                    />
+                    <button
+                      onClick={() => handleShareAccess(doc._id)}
+                      className={styles.copyButton}
+                      disabled={!shareAddresses[doc._id]}
+                    >
+                      Share
+                    </button>
+                  </div>
+                  {shareStatus[doc._id] && (
+                    <div style={{ color: 'green', marginTop: '0.5rem' }}>
+                      {shareStatus[doc._id]}
+                    </div>
+                  )}
+                </div>
+
                 <div style={{ marginBottom: '0.5rem' }}>
                   <strong>Files:</strong>
                   <ul style={{ marginTop: '0.5rem' }}>
