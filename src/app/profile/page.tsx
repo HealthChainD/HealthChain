@@ -31,6 +31,24 @@ const mockDocuments = [
   }
 ];
 
+const mockPatientInfo = {
+  fullName: 'Іваненко Марія Петрівна',
+  dateOfBirth: '1990-05-15',
+  gender: 'Жіноча',
+  bloodType: 'A(II) Rh+',
+  contact: {
+    phone: '+380501234567',
+    email: 'maria.ivanenko@email.com',
+    address: 'м. Київ, вул. Шевченка, 10, кв. 25'
+  },
+  medicalInfo: {
+    chronicDiseases: ['Гіпертонія', 'Цукровий діабет 2 типу'],
+    allergies: ['Пеніцилін', 'Пилок берези'],
+    height: 165,
+    weight: 58,
+    lastCheckup: '2024-02-20'
+  }
+};
 
 const mockDoctors = [
   {
@@ -58,7 +76,7 @@ const mockDoctors = [
 
 export default function Profile() {
   const { publicKey } = useWallet();
-  const [activeTab, setActiveTab] = useState('documents');
+  const [activeTab, setActiveTab] = useState('personal');
 
   if (!publicKey) {
     return (
@@ -84,6 +102,12 @@ export default function Profile() {
 
       <div className={styles.tabs}>
         <button
+          className={`${styles.tab} ${activeTab === 'personal' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('personal')}
+        >
+          Особиста інформація
+        </button>
+        <button
           className={`${styles.tab} ${activeTab === 'documents' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('documents')}
         >
@@ -98,7 +122,79 @@ export default function Profile() {
       </div>
 
       <div className={styles.content}>
-        {activeTab === 'documents' ? (
+        {activeTab === 'personal' ? (
+          <div className={styles.personalInfo}>
+            <div className={styles.personalInfoSection}>
+              <h2>Основна інформація</h2>
+              <div className={styles.infoGrid}>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>ПІБ:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.fullName}</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Дата народження:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.dateOfBirth}</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Стать:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.gender}</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Група крові:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.bloodType}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.personalInfoSection}>
+              <h2>Контактна інформація</h2>
+              <div className={styles.infoGrid}>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Телефон:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.contact.phone}</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Email:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.contact.email}</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Адреса:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.contact.address}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.personalInfoSection}>
+              <h2>Медична інформація</h2>
+              <div className={styles.infoGrid}>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Хронічні захворювання:</span>
+                  <span className={styles.infoValue}>
+                    {mockPatientInfo.medicalInfo.chronicDiseases.join(', ')}
+                  </span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Алергії:</span>
+                  <span className={styles.infoValue}>
+                    {mockPatientInfo.medicalInfo.allergies.join(', ')}
+                  </span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Зріст:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.height} см</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Вага:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.weight} кг</span>
+                </div>
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Останній огляд:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.lastCheckup}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : activeTab === 'documents' ? (
           <div className={styles.documentsList}>
             {mockDocuments.map((doc) => (
               <div key={doc.id} className={styles.documentCard}>
