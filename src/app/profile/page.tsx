@@ -3,47 +3,46 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import styles from './Profile.module.css';
 import { useState } from 'react';
 
-
 const mockDocuments = [
   {
     id: 1,
-    name: 'Результати аналізів крові',
+    name: 'Blood Test Results',
     date: '2024-03-15',
     type: 'application/pdf',
     cid: 'QmX123456789abcdef',
-    doctor: 'Др. Петренко О.В.'
+    doctor: 'Dr. Petro O.V.'
   },
   {
     id: 2,
-    name: 'Рентген легенів',
+    name: 'Chest X-Ray',
     date: '2024-03-10',
     type: 'image/jpeg',
     cid: 'QmY987654321fedcba',
-    doctor: 'Др. Коваленко І.М.'
+    doctor: 'Dr. Kovalenko I.M.'
   },
   {
     id: 3,
-    name: 'Консультація кардіолога',
+    name: 'Cardiologist Consultation',
     date: '2024-03-05',
     type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     cid: 'QmZ456789123abcdef',
-    doctor: 'Др. Сидоренко П.І.'
+    doctor: 'Dr. Sydorenko P.I.'
   }
 ];
 
 const mockPatientInfo = {
-  fullName: 'Іваненко Марія Петрівна',
+  fullName: 'Maria Ivanenko',
   dateOfBirth: '1990-05-15',
-  gender: 'Жіноча',
+  gender: 'Female',
   bloodType: 'A(II) Rh+',
   contact: {
     phone: '+380501234567',
     email: 'maria.ivanenko@email.com',
-    address: 'м. Київ, вул. Шевченка, 10, кв. 25'
+    address: 'Kyiv, Shevchenko St. 10, Apt. 25'
   },
   medicalInfo: {
-    chronicDiseases: ['Гіпертонія', 'Цукровий діабет 2 типу'],
-    allergies: ['Пеніцилін', 'Пилок берези'],
+    chronicDiseases: ['Hypertension', 'Type 2 Diabetes'],
+    allergies: ['Penicillin', 'Birch Pollen'],
     height: 165,
     weight: 58,
     lastCheckup: '2024-02-20'
@@ -53,22 +52,22 @@ const mockPatientInfo = {
 const mockDoctors = [
   {
     id: 1,
-    name: 'Др. Петренко Олександр Володимирович',
-    specialization: 'Терапевт',
+    name: 'Dr. Petro Oleksandr',
+    specialization: 'Therapist',
     contact: '+380501234567',
-    email: 'petrenko@healthchain.com'
+    email: 'petro@healthchain.com'
   },
   {
     id: 2,
-    name: 'Др. Коваленко Ірина Миколаївна',
-    specialization: 'Рентгенолог',
+    name: 'Dr. Kovalenko Iryna',
+    specialization: 'Radiologist',
     contact: '+380672345678',
     email: 'kovalenko@healthchain.com'
   },
   {
     id: 3,
-    name: 'Др. Сидоренко Петро Іванович',
-    specialization: 'Кардіолог',
+    name: 'Dr. Sydorenko Petro',
+    specialization: 'Cardiologist',
     contact: '+380633456789',
     email: 'sydorenko@healthchain.com'
   }
@@ -91,9 +90,9 @@ export default function Profile() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Особистий кабінет</h1>
+        <h1>Personal Account</h1>
         <div className={styles.walletInfo}>
-          <span>Ваш гаманець:</span>
+          <span>Your wallet:</span>
           <span className={styles.walletAddress}>
             {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
           </span>
@@ -105,19 +104,19 @@ export default function Profile() {
           className={`${styles.tab} ${activeTab === 'personal' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('personal')}
         >
-          Особиста інформація
+          Personal Information
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'documents' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('documents')}
         >
-          Мої документи
+          My Documents
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'doctors' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('doctors')}
         >
-          Контакти лікарів
+          Doctor Contacts
         </button>
       </div>
 
@@ -125,32 +124,32 @@ export default function Profile() {
         {activeTab === 'personal' ? (
           <div className={styles.personalInfo}>
             <div className={styles.personalInfoSection}>
-              <h2>Основна інформація</h2>
+              <h2>Basic Information</h2>
               <div className={styles.infoGrid}>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>ПІБ:</span>
+                  <span className={styles.infoLabel}>Full Name:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.fullName}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Дата народження:</span>
+                  <span className={styles.infoLabel}>Date of Birth:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.dateOfBirth}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Стать:</span>
+                  <span className={styles.infoLabel}>Gender:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.gender}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Група крові:</span>
+                  <span className={styles.infoLabel}>Blood Type:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.bloodType}</span>
                 </div>
               </div>
             </div>
 
             <div className={styles.personalInfoSection}>
-              <h2>Контактна інформація</h2>
+              <h2>Contact Information</h2>
               <div className={styles.infoGrid}>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Телефон:</span>
+                  <span className={styles.infoLabel}>Phone:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.contact.phone}</span>
                 </div>
                 <div className={styles.infoItem}>
@@ -158,37 +157,37 @@ export default function Profile() {
                   <span className={styles.infoValue}>{mockPatientInfo.contact.email}</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Адреса:</span>
+                  <span className={styles.infoLabel}>Address:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.contact.address}</span>
                 </div>
               </div>
             </div>
 
             <div className={styles.personalInfoSection}>
-              <h2>Медична інформація</h2>
+              <h2>Medical Information</h2>
               <div className={styles.infoGrid}>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Хронічні захворювання:</span>
+                  <span className={styles.infoLabel}>Chronic Diseases:</span>
                   <span className={styles.infoValue}>
                     {mockPatientInfo.medicalInfo.chronicDiseases.join(', ')}
                   </span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Алергії:</span>
+                  <span className={styles.infoLabel}>Allergies:</span>
                   <span className={styles.infoValue}>
                     {mockPatientInfo.medicalInfo.allergies.join(', ')}
                   </span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Зріст:</span>
-                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.height} см</span>
+                  <span className={styles.infoLabel}>Height:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.height} cm</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Вага:</span>
-                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.weight} кг</span>
+                  <span className={styles.infoLabel}>Weight:</span>
+                  <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.weight} kg</span>
                 </div>
                 <div className={styles.infoItem}>
-                  <span className={styles.infoLabel}>Останній огляд:</span>
+                  <span className={styles.infoLabel}>Last Checkup:</span>
                   <span className={styles.infoValue}>{mockPatientInfo.medicalInfo.lastCheckup}</span>
                 </div>
               </div>
@@ -201,14 +200,14 @@ export default function Profile() {
                 <div className={styles.documentInfo}>
                   <h3>{doc.name}</h3>
                   <p className={styles.documentMeta}>
-                    <span>Дата: {doc.date}</span>
-                    <span>Лікар: {doc.doctor}</span>
+                    <span>Date: {doc.date}</span>
+                    <span>Doctor: {doc.doctor}</span>
                   </p>
                   <p className={styles.documentCid}>CID: {doc.cid}</p>
                 </div>
                 <div className={styles.documentActions}>
-                  <button className={styles.viewButton}>Переглянути</button>
-                  <button className={styles.downloadButton}>Завантажити</button>
+                  <button className={styles.viewButton}>View</button>
+                  <button className={styles.downloadButton}>Download</button>
                 </div>
               </div>
             ))}
@@ -222,7 +221,7 @@ export default function Profile() {
                   <p className={styles.doctorSpecialization}>{doctor.specialization}</p>
                   <div className={styles.doctorContacts}>
                     <p>
-                      <span className={styles.contactLabel}>Телефон:</span>
+                      <span className={styles.contactLabel}>Phone:</span>
                       <a href={`tel:${doctor.contact}`}>{doctor.contact}</a>
                     </p>
                     <p>
@@ -231,7 +230,7 @@ export default function Profile() {
                     </p>
                   </div>
                 </div>
-                <button className={styles.contactButton}>Написати</button>
+                <button className={styles.contactButton}>Contact</button>
               </div>
             ))}
           </div>
